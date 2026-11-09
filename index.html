@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Brute Force Simulator</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  background: #10121c; color: white; font-family: Tahoma, Arial;
+  text-align: center; padding: 30px 15px; margin: 0;
+}
+.container { max-width: 500px; margin: auto; }
+.box {
+  background: #1d2233; padding: 25px; border-radius: 15px;
+  margin: 20px 0; border: 1px solid #353d58;
+}
+h1 { color: #8b9cff; }
+input {
+  width: 100%; padding: 13px; margin: 10px 0; border-radius: 8px;
+  border: none; background: #30384e; color: white; font-size: 16px;
+  text-align: center;
+}
+button {
+  background: #586cff; color: white; padding: 12px 25px; border: none;
+  border-radius: 8px; cursor: pointer; margin: 8px; font-size: 15px;
+}
+button:hover { background: #7888ff; }
+#output {
+  background: #10121c; height: 160px; overflow-y: auto; padding: 12px;
+  text-align: left; direction: ltr; border-radius: 8px;
+  font-family: monospace; overflow-wrap: anywhere;
+}
+.success { color: #4cff9a; font-size: 22px; font-weight: bold; }
+.error { color: #ff6868; }
+small { color: #b8bfd6; line-height: 1.8; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Brute Force Simulator</h1>
+
+  <div class="box">
+    <h3>رمز اصلی را وارد کنید</h3>
+    <input id="password" type="text" placeholder="Enter password">
+    <button type="button" onclick="savePassword()">ذخیره رمز</button>
+    <p id="saved"></p>
+  </div>
+
+  <div class="box">
+    <h3>بررسی حدس</h3>
+    <input id="guess" type="text" placeholder="حدس خود را وارد کنید">
+    <button type="button" onclick="checkPassword()">بررسی رمز</button>
+    <p id="result" aria-live="polite"></p>
+  </div>
+
+  <div class="box">
+    <h3>خروجی عملیات</h3>
+    <div id="output" aria-live="polite">Waiting...</div>
+  </div>
+
+  <p>سایت برای تمرین مفهوم بروت فورس<br>کلاس دهم کامپیوتر تیزهوشان</p>
+  <small>این شبیه‌ساز فقط حدس‌هایی را که خودتان وارد می‌کنید بررسی می‌کند. رمز فقط در حافظه همین صفحه می‌ماند.</small>
+</div>
+
+<script>
+let originalPassword = "";
+
+function savePassword() {
+  const value = document.getElementById("password").value;
+  if (!value) {
+    alert("لطفاً رمز وارد کنید");
+    return;
+  }
+
+  originalPassword = value;
+  document.getElementById("saved").textContent = "رمز با موفقیت ذخیره شد.";
+  document.getElementById("result").textContent = "";
+  document.getElementById("output").textContent = "Password saved. Ready to test.";
+  document.getElementById("guess").focus();
+}
+
+function checkPassword() {
+  if (!originalPassword) {
+    alert("ابتدا رمز اصلی را ذخیره کنید");
+    return;
+  }
+
+  const guess = document.getElementById("guess").value;
+  if (!guess) {
+    alert("لطفاً یک حدس وارد کنید");
+    return;
+  }
+
+  const output = document.getElementById("output");
+  output.textContent += "\nTrying: " + guess;
+  output.scrollTop = output.scrollHeight;
+
+  const result = document.getElementById("result");
+  if (guess === originalPassword) {
+    result.innerHTML = '<span class="success">SUCCESS! رمز پیدا شد!</span>';
+  } else {
+    result.innerHTML = '<span class="error">Wrong password! دوباره تلاش کن.</span>';
+  }
+}
+
+document.getElementById("guess").addEventListener("keydown", function(event) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    checkPassword();
+  }
+});
+</script>
+</body>
+</html>
